@@ -64,11 +64,20 @@ def diffvcf(x, y):
         else:
             ISother += 1
 
-    f2.write('\ttotal\t0/0\t0/1\t1/1\tother\n'+x+'\t'+str(len(xsite_and_type))+'\t'+str(xzerozero)+'\t'+str(xzerone)+'\t'+str(xoneone)+'\t'+str(xother)+'\n'+y+'\t'+str(len(ysite_and_type))+'\t'+str(yzerozero)+'\t'+str(yzerone)+'\t'+str(yoneone)+'\t'+str(yother)+'\n'+'Intersection\t'+str(len(siteandtype_intersection))+'\t'+str(ISzerozero)+'\t'+str(ISzerone)+'\t'+str(ISoneone)+'\t'+str(ISother)+'\n')
+    f2.write('\ttotal\t0/0\t0/1\t1/1\tother\n' + x + '\t' + \
+str(len(xsite_and_type)) + '\t'+str(xzerozero) + '\t' + str(xzerone) + \
+'\t' + str(xoneone) + '\t' + str(xother) + '\n' + y + '\t' + \
+str(len(ysite_and_type)) + '\t' + str(yzerozero) + '\t' + str(yzerone) + \
+'\t' + str(yoneone) + '\t' + str(yother) + '\n' + 'Intersection\t' + \
+str(len(siteandtype_intersection)) + '\t' + str(ISzerozero) + '\t' + \
+str(ISzerone) + '\t' + str(ISoneone) + '\t' + str(ISother) + '\n')
+
 if __name__ == '__main__':
     import sys
     if len(sys.argv) == 1:
-        print 'please assign your files that need to analyze!'
+        print 'Please assign your files that need to analyze!'
+    if len(sys.argv) == 2:
+        print 'Please input at least 2 files!'
     diffvcf(str(sys.argv[1]), sys.argv[2])
 
 
