@@ -28,6 +28,7 @@ def diffvcf(x, y):
                 xoneone += 1
             else:
                 xother += 1
+
     yzerozero = 0
     yzerone = 0
     yoneone = 0
@@ -49,6 +50,7 @@ def diffvcf(x, y):
                 yother += 1
 
     siteandtype_intersection = xsite_and_type & ysite_and_type
+
     ISzerozero = 0
     ISzerone = 0
     ISoneone = 0
