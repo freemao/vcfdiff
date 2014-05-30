@@ -1,73 +1,75 @@
 #!/usr/lib/python
 #-*- coding:utf-8 -*-
-f0 = open('C17.BQSR.vcf')
-f1 = open('C17.vcf')
-f2 = open('statistic_outcome.txt', 'w')
-BQSRsite= set()
-C17site = set()
+def diffvcf(x, y):
+    f0 = open(x, 'r')
+    f1 = open(y, 'r')
+    newfile = x.split('.')[0] + '-' + y.split('.')[0] + '.txt'
+    f2 = open(newfile, 'w')
 
-BQSRsite_and_type = set()
-C17site_and_type = set()
+    xsite_and_type = set()
+    ysite_and_type = set()
 
-
-C17zerozero = 0
-C17zerone = 0
-C17oneone = 0
-C17other = 0
-for i in f0:
-    if i.startswith('#'):
-        pass
-    else:
-        j = ''.join(i.split()[0:4])
-        BQSRsite.add(j)
-        k = ''.join(i.split()[0:4]) + '-' + i.split()[9].split(':')[0]
-        BQSRsite_and_type.add(k)
-        m = i.split()[9].split(':')[0]
-        if m == '0/0':
-            C17zerozero += 1
-        elif m == '0/1':
-            C17zerone += 1
-        elif m == '1/1':
-            C17oneone += 1
+    xzerozero = 0
+    xzerone = 0
+    xoneone = 0
+    xother = 0
+    for i in f0:
+        if i.startswith('#'):
+            pass
         else:
-            C17other += 1
-BQSRzerozero = 0
-BQSRzerone = 0
-BQSRoneone = 0
-BQSRother = 0
-for i in f1:
-    if i.startswith('#'):
-        pass
-    else:
-        j = ''.join(i.split()[0:4])
-        C17site.add(j)
-        k = ''.join(i.split()[0:4]) + '-' + i.split()[9].split(':')[0]
-        C17site_and_type.add(k)
-        m = i.split()[9].split(':')[0]
-        if m == '0/0':
-            BQSRzerozero += 1
-        elif m == '0/1':
-            BQSRzerone += 1
-        elif m == '1/1':
-            BQSRoneone += 1
+            k = ''.join(i.split()[0:4]) + '-' + i.split()[9].split(':')[0]
+            xsite_and_type.add(k)
+            m = i.split()[9].split(':')[0]
+            if m == '0/0':
+                xzerozero += 1
+            elif m == '0/1':
+                xzerone += 1
+            elif m == '1/1':
+                xoneone += 1
+            else:
+                xother += 1
+    yzerozero = 0
+    yzerone = 0
+    yoneone = 0
+    yother = 0
+    for i in f1:
+        if i.startswith('#'):
+            pass
         else:
-            BQSRother += 1
+            k = ''.join(i.split()[0:4]) + '-' + i.split()[9].split(':')[0]
+            ysite_and_type.add(k)
+            m = i.split()[9].split(':')[0]
+            if m == '0/0':
+                yzerozero += 1
+            elif m == '0/1':
+                yzerone += 1
+            elif m == '1/1':
+                yoneone += 1
+            else:
+                yother += 1
 
-site_intersection = C17site & BQSRsite
-siteandtype_intersection = BQSRsite_and_type & C17site_and_type
-zerozero = 0
-zerone = 0
-oneone = 0
-other = 0
-for i in siteandtype_intersection:
-    j = i.split('-')[-1]
-    if j == '0/0':
-        zerozero += 1
-    elif j == '0/1':
-        zerone += 1
-    elif j == '1/1':
-        oneone += 1
-    else:
-        other += 1
+    siteandtype_intersection = xsite_and_type & ysite_and_type
+    ISzerozero = 0
+    ISzerone = 0
+    ISoneone = 0
+    ISother = 0
+    for i in siteandtype_intersection:
+        j = i.split('-')[-1]
+        if j == '0/0':
+            ISzerozero += 1
+        elif j == '0/1':
+            ISzerone += 1
+        elif j == '1/1':
+            ISoneone += 1
+        else:
+            ISother += 1
 
-f2.write('\ttotal\t0/0\t0/1\t1/1\tother\nC17\t'+str(len(C17site_and_type))+'\t'+str(C17zerozero)+'\t'+str(C17zerone)+'\t'+str(C17oneone)+'\t'+str(C17other)+'\n'+'C17BQSR\t'+str(len(BQSRsite_and_type))+'\t'+str(BQSRzerozero)+'\t'+str(BQSRzerone)+'\t'+str(BQSRoneone)+'\t'+str(BQSRother)+'\n'+'Intersection\t'+str(len(siteandtype_intersection))+'\t'+str(zerozero)+'\t'+str(zerone)+'\t'+str(oneone)+'\t'+str(other)+'\n')
+    f2.write('\ttotal\t0/0\t0/1\t1/1\tother\n'+x+'\t'+str(len(xsite_and_type))+'\t'+str(xzerozero)+'\t'+str(xzerone)+'\t'+str(xoneone)+'\t'+str(xother)+'\n'+y+'\t'+str(len(ysite_and_type))+'\t'+str(yzerozero)+'\t'+str(yzerone)+'\t'+str(yoneone)+'\t'+str(yother)+'\n'+'Intersection\t'+str(len(siteandtype_intersection))+'\t'+str(ISzerozero)+'\t'+str(ISzerone)+'\t'+str(ISoneone)+'\t'+str(ISother)+'\n')
+if __name__ == '__main__':
+    import sys
+    if len(sys.argv) == 1:
+        print 'please assign your files that need to analyze!'
+    diffvcf(str(sys.argv[1]), sys.argv[2])
+
+
+
