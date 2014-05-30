@@ -1,6 +1,10 @@
 #!/usr/lib/python
 #-*- coding:utf-8 -*-
 def diffvcf(x, y):
+    '''Argument x and y are vcf files you want to analyze.
+       Count the number between them in some field such as total number,
+       0/0, 0/1, 1/1 number and the intersection between them.
+    '''
     f0 = open(x, 'r')
     f1 = open(y, 'r')
     newfile = x.split('.')[0] + '-' + y.split('.')[0] + '.txt'
